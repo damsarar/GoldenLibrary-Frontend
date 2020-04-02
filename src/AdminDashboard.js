@@ -5,14 +5,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-
 import ListItemText from '@material-ui/core/ListItemText';
-
-
-
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -30,10 +25,23 @@ import CustomerIcon from '@material-ui/icons/EmojiPeople';
 import LibraryBookIcon from '@material-ui/icons/LibraryBooks'
 import BookIcon from '@material-ui/icons/Book';
 
-import OrderIcon from '@material-ui/icons/ListAlt';
+import OrderIcon from '@material-ui/icons/ShoppingCart';
 import PaymentIcon from '@material-ui/icons/Payment';
 
+// Router
+
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
+// Views
+
+import AdminAdministrators from './views/admin/adminAdministrators'
+import AdminMembers from './views/admin/adminMembers'
+
+
 const drawerWidth = 240;
+
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,9 +80,14 @@ function AdminDashboard(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [selectedIndex, setSelectedIndex] = React.useState(1);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
+    };
+
+    const handleListItemClick = (event, index) => {
+        setSelectedIndex(index);
     };
 
     const drawer = (
@@ -82,7 +95,13 @@ function AdminDashboard(props) {
             <div className={classes.toolbar} />
             <Divider />
             <List>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/administrators"
+                    selected={selectedIndex === 0}
+                    onClick={(event) => handleListItemClick(event, 0)}
+                >
                     <ListItemIcon>
                         <AdminIcon />
                     </ListItemIcon>
@@ -90,7 +109,12 @@ function AdminDashboard(props) {
                         Administrators
                     </ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/members"
+                    selected={selectedIndex === 1}
+                    onClick={(event) => handleListItemClick(event, 1)}>
                     <ListItemIcon>
                         <MemberIcon />
                     </ListItemIcon>
@@ -98,7 +122,11 @@ function AdminDashboard(props) {
                         Members
                     </ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem button
+                    component={Link}
+                    to="/admin/customers"
+                    selected={selectedIndex === 2}
+                    onClick={(event) => handleListItemClick(event, 2)}>
                     <ListItemIcon>
                         <CustomerIcon />
                     </ListItemIcon>
@@ -111,7 +139,12 @@ function AdminDashboard(props) {
             </List>
             <Divider />
             <List>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/library-books"
+                    selected={selectedIndex === 3}
+                    onClick={(event) => handleListItemClick(event, 3)}>
                     <ListItemIcon>
                         <LibraryBookIcon />
                     </ListItemIcon>
@@ -119,7 +152,12 @@ function AdminDashboard(props) {
                         Library Books
                     </ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/store-books"
+                    selected={selectedIndex === 4}
+                    onClick={(event) => handleListItemClick(event, 4)}>
                     <ListItemIcon>
                         <BookIcon />
                     </ListItemIcon>
@@ -130,7 +168,12 @@ function AdminDashboard(props) {
             </List>
             <Divider />
             <List>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/orders"
+                    selected={selectedIndex === 5}
+                    onClick={(event) => handleListItemClick(event, 5)}>
                     <ListItemIcon>
                         <OrderIcon />
                     </ListItemIcon>
@@ -138,7 +181,12 @@ function AdminDashboard(props) {
                         Orders
                     </ListItemText>
                 </ListItem>
-                <ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/admin/payments"
+                    selected={selectedIndex === 6}
+                    onClick={(event) => handleListItemClick(event, 6)}>
                     <ListItemIcon>
                         <PaymentIcon />
                     </ListItemIcon>
@@ -154,80 +202,74 @@ function AdminDashboard(props) {
 
     return (
         <div className={classes.root}>
-            <CssBaseline />
-            <AppBar position="fixed" className={classes.appBar}>
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        edge="start"
-                        onClick={handleDrawerToggle}
-                        className={classes.menuButton}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" noWrap>
-                        Golden Library & Books Store
+            <Router>
+                <CssBaseline />
+                <AppBar position="fixed" className={classes.appBar} style={{ backgroundColor: "gold", color: "black" }}>
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            edge="start"
+                            onClick={handleDrawerToggle}
+                            className={classes.menuButton}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" noWrap>
+                            Golden Library & Books Store
                      </Typography>
-                </Toolbar>
-            </AppBar>
-            <nav className={classes.drawer} aria-label="mailbox folders">
-                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                <Hidden smUp implementation="css">
-                    <Drawer
-                        container={container}
-                        variant="temporary"
-                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                        open={mobileOpen}
-                        onClose={handleDrawerToggle}
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        ModalProps={{
-                            keepMounted: true, // Better open performance on mobile.
-                        }}
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-                <Hidden xsDown implementation="css">
-                    <Drawer
-                        classes={{
-                            paper: classes.drawerPaper,
-                        }}
-                        variant="permanent"
-                        open
-                    >
-                        {drawer}
-                    </Drawer>
-                </Hidden>
-            </nav>
-            <main className={classes.content}>
-                <div className={classes.toolbar} />
-                <Typography paragraph>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                    ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-                    facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-                    gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-                    donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-                    adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-                    Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-                    imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-                    arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-                    donec massa sapien faucibus et molestie ac.
-                </Typography>
-                <Typography paragraph>
-                    Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-                    facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-                    tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-                    consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-                    vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-                    hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-                    tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-                    nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-                    accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-                </Typography>
-            </main>
+                    </Toolbar>
+                </AppBar>
+                <nav className={classes.drawer} aria-label="mailbox folders">
+                    {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                    <Hidden smUp implementation="css">
+                        <Drawer
+                            container={container}
+                            variant="temporary"
+                            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                            open={mobileOpen}
+                            onClose={handleDrawerToggle}
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                            ModalProps={{
+                                keepMounted: true, // Better open performance on mobile.
+                            }}
+                        >
+                            {drawer}
+                        </Drawer>
+
+                    </Hidden>
+                    <Hidden xsDown implementation="css">
+                        <Drawer
+                            classes={{
+                                paper: classes.drawerPaper,
+                            }}
+                            variant="permanent"
+                            open
+                        >
+                            {drawer}
+                        </Drawer>
+
+
+                    </Hidden>
+                </nav>
+                <main className={classes.content}>
+                    <div className={classes.toolbar} />
+                    <Switch>
+                        <Route path="/admin/administrators">
+                            <AdminAdministrators></AdminAdministrators>
+                        </Route>
+                        <Route path="/admin/members">
+                            <AdminMembers></AdminMembers>
+                        </Route>
+
+                    </Switch>
+
+                </main>
+
+            </Router>
+
         </div>
     );
 }
