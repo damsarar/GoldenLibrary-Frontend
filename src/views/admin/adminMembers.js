@@ -33,7 +33,7 @@ class adminMembers extends React.Component {
         //         console.log(this.state.adminMembers)
         //     })
 
-        axios.get('http://localhost:8080/users').then(res => {
+        axios.get('http://localhost:8080/members').then(res => {
             this.setState({
                 adminMembers: res.data
             })
@@ -62,21 +62,25 @@ class adminMembers extends React.Component {
                     <Table aria-label="simple table">
                         <TableHead style={{ backgroundColor: '#424242' }}>
                             <TableRow >
-                                <TableCell style={{ color: 'white' }}>Name</TableCell>
+                                <TableCell style={{ color: 'white' }}>First Name</TableCell>
+                                <TableCell style={{ color: 'white' }}>Last Name</TableCell>
                                 <TableCell style={{ color: 'white' }}>Email</TableCell>
-                                <TableCell style={{ color: 'white' }}>Age</TableCell>
+                                <TableCell style={{ color: 'white' }}>Date of birth</TableCell>
                                 <TableCell style={{ color: 'white' }}>Address</TableCell>
+                                <TableCell style={{ color: 'white' }}>Member Since</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {this.state.adminMembers.map((row) => (
-                                <TableRow key={row.name}>
+                                <TableRow key={row.fname}>
                                     <TableCell component="th" scope="row">
-                                        {row.name}
+                                        {row.fname}
                                     </TableCell>
+                                    <TableCell >{row.lname}</TableCell>
                                     <TableCell >{row.email}</TableCell>
-                                    <TableCell >{row.age}</TableCell>
+                                    <TableCell >{row.dob}</TableCell>
                                     <TableCell >{row.address}</TableCell>
+                                    <TableCell >{row.memberSince}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
