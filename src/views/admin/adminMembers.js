@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import moment from 'moment'
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -72,15 +73,21 @@ class adminMembers extends React.Component {
                         </TableHead>
                         <TableBody>
                             {this.state.adminMembers.map((row) => (
-                                <TableRow key={row.fname}>
+                                <TableRow key={row.id}>
                                     <TableCell component="th" scope="row">
                                         {row.fname}
                                     </TableCell>
                                     <TableCell >{row.lname}</TableCell>
                                     <TableCell >{row.email}</TableCell>
-                                    <TableCell >{row.dob}</TableCell>
+                                    <TableCell >
+                                        {moment(row.dob).format("YYYY-MM-DD")}
+                                        <div style={{ fontSize: '11px', color: "grey" }}>{moment(row.dob).fromNow(true)}</div>
+                                    </TableCell>
                                     <TableCell >{row.address}</TableCell>
-                                    <TableCell >{row.memberSince}</TableCell>
+                                    <TableCell >
+                                        {moment(row.memberSince).format("YYYY-MM-DD")}
+                                        <div style={{ fontSize: '11px', color: "grey" }}>{moment(row.memberSince).fromNow(true)}</div>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
