@@ -9,9 +9,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Container, Grid, Avatar } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Container, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add'
+import EditIcon from '@material-ui/icons/Edit'
+import DeleteIcon from '@material-ui/icons/DeleteForever'
 
 class adminMembers extends React.Component {
     constructor(props) {
@@ -26,7 +28,6 @@ class adminMembers extends React.Component {
 
         this.handleClickOpen = this.handleClickOpen.bind(this)
         this.handleClose = this.handleClose.bind(this)
-
     }
 
     handleClickOpen(item) {
@@ -97,9 +98,7 @@ class adminMembers extends React.Component {
                             <TableBody>
                                 {this.state.adminMembers.map((row) => (
                                     <TableRow key={row.id} onClick={() => this.handleClickOpen(row)}>
-                                        <TableCell component="th" scope="row" >
-                                            {row.fname}
-                                        </TableCell>
+                                        <TableCell>{row.fname}</TableCell>
                                         <TableCell >{row.lname}</TableCell>
                                         <TableCell >{row.email}</TableCell>
                                         <TableCell >
@@ -126,35 +125,71 @@ class adminMembers extends React.Component {
                         aria-describedby="alert-dialog-description"
                         fullWidth
                     >
-                        <DialogTitle id="alert-dialog-title">{this.state.memberItem.fname + " " + this.state.memberItem.lname}</DialogTitle>
+                        {/* <DialogTitle id="alert-dialog-title">{this.state.memberItem.fname + " " + this.state.memberItem.lname}</DialogTitle> */}
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                <Grid container spacing={2}>
-                                    <Grid item md={6} xs={12}>
-                                        Address - {this.state.memberItem.address}<br></br>
-                                        Email - {this.state.memberItem.email}<br></br>
-                                        Date of birth - {moment(this.state.memberItem.dob).format("YYYY-MM-DD")}<br></br>
-                                        Registered date - {moment(this.state.memberItem.memberSince).format("YYYY-MM-DD")}<br></br>
-                                        <div style={{ fontSize: '11px', color: "#757575" }}>{moment(this.state.memberItem.memberSince).fromNow(true)}</div>
-                                        <Button size="small" variant="outlined" color="primary"
-                                            style={{ marginTop: "10px", marginRight: "5px" }}>
-                                            Edit Details
-                                        </Button>
-                                        <Button size="small" variant="outlined" color="secondary"
-                                            style={{ marginTop: "10px" }}>
-                                            Delete
-                                        </Button>
-                                    </Grid>
-                                    <Grid item md={6} xs={12}>
-                                        <Avatar alt="Remy Sharp"
-                                            src='https://github.com/damsarar/GoldenLibrary-Frontend/blob/master/public/avatar.png'
-                                            style={{ width: '150px', height: '150px' }}
-                                        />
-                                    </Grid>
-                                    <Grid>
-                                        <h4>Borrowing History</h4>
-                                    </Grid>
-                                </Grid>
+                                <Card variant="outlined">
+                                    <CardMedia
+                                        component="img"
+                                        alt="Member Image"
+                                        // style={{ minHeight: "300px" }}
+                                        height="300"
+                                        image="https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
+                                        title="Contemplative Reptile"
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2" align="center">
+                                            {this.state.memberItem.fname + " " + this.state.memberItem.lname}
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p" align="center">
+                                            Address - {this.state.memberItem.address}<br></br>
+                                            Email - {this.state.memberItem.email}<br></br>
+                                            Date of birth - {moment(this.state.memberItem.dob).format("YYYY-MM-DD")}<br></br>
+                                            Registered date - {moment(this.state.memberItem.memberSince).format("YYYY-MM-DD")}<br></br>
+                                            <Button size="small" variant="outlined" color="primary"
+                                                style={{ marginTop: "10px", marginRight: "5px" }}
+                                                startIcon={<EditIcon></EditIcon>}
+                                            >
+                                                Edit Details
+                                            </Button>
+                                            <Button size="small" variant="outlined" color="secondary"
+                                                style={{ marginTop: "10px" }}
+                                                startIcon={<DeleteIcon></DeleteIcon>}
+                                            >
+                                                Delete
+                                            </Button>
+                                            <h3>Borrowing History</h3>
+                                            <TableContainer component={Paper}>
+                                                <Table aria-label="simple table">
+                                                    <TableHead style={{ backgroundColor: '#424242' }}>
+                                                        <TableRow >
+                                                            <TableCell style={{ color: 'white' }}>Book ID</TableCell>
+                                                            <TableCell style={{ color: 'white' }}>Book Name</TableCell>
+                                                            <TableCell style={{ color: 'white' }}>Borrowed Date</TableCell>
+                                                            <TableCell style={{ color: 'white' }}>Returned Date</TableCell>
+                                                            <TableCell style={{ color: 'white' }}>Fine</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {this.state.adminMembers.map((row) => (
+                                                            <TableRow key={row.id} onClick={() => this.handleClickOpen(row)}>
+                                                                <TableCell >NVL0004 </TableCell>
+                                                                <TableCell >කලියුගය</TableCell>
+                                                                <TableCell >2020-04-05</TableCell>
+                                                                <TableCell >2020-04-07</TableCell>
+                                                                <TableCell >100 </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+                                        </Typography>
+
+                                    </CardContent>
+                                    <CardActions disableSpacing>
+
+                                    </CardActions>
+                                </Card>
 
 
                             </DialogContentText>
