@@ -9,7 +9,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { Button, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Container, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, Typography, CardActions } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions, Container, Grid, Avatar, Card, CardHeader, CardMedia, CardContent, Typography, CardActions, TextField } from '@material-ui/core';
 
 import AddIcon from '@material-ui/icons/Add'
 import EditIcon from '@material-ui/icons/Edit'
@@ -21,42 +21,77 @@ class adminMembers extends React.Component {
 
         this.state = {
             adminMembers: [],
-            open: false,
+            openView: false,
+            openEdit: false,
             name: 'Name',
-            memberItem: []
+            memberItem: [],
+            memberDocId: ''
         }
 
-        this.handleClickOpen = this.handleClickOpen.bind(this)
-        this.handleClose = this.handleClose.bind(this)
+        this.handleClickOpenView = this.handleClickOpenView.bind(this)
+        this.handleCloseView = this.handleCloseView.bind(this)
+
+        this.handleClickOpenEdit = this.handleClickOpenEdit.bind(this)
+        this.handleCloseEdit = this.handleCloseEdit.bind(this)
+
+        this.editMember = this.editMember.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
 
-    handleClickOpen(item) {
+    handleClickOpenView(item) {
 
         this.setState({
-            name: 'Damsara',
             memberItem: item,
-            open: true,
+            memberDocId: item.id,
+            openView: true,
         })
         console.log(this.state.memberItem)
     };
 
-    handleClose() {
+    handleCloseView() {
         this.setState({
-            open: false
+            openView: false
         })
     };
 
+    handleClickOpenEdit() {
+
+        this.setState({
+            openEdit: true,
+        })
+        console.log(this.state.memberItem)
+    };
+
+    handleCloseEdit() {
+        this.setState({
+            openEdit: false
+        })
+    };
+
+    onChange(e) {
+        const state = this.state.memberItem
+        state[e.target.name] = e.target.value
+        this.setState({
+            memberItem: state
+        })
+    }
+
+    editMember(e) {
+        e.preventDefault();
+
+        const address = this.state.memberItem.address
+        const contactNo = this.state.memberItem.contactNo
+
+        axios.put('http://localhost:8080/members/' + this.state.memberDocId, { "address": address, "contactNo": contactNo })
+            .then((result) => {
+                console.log(result)
+                this.handleCloseEdit()
+            }).catch(e => {
+                console.log(e)
+            })
+    }
+
     componentDidMount() {
-        // fetch('http://localhost:8080/users')
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         this.setState({
-        //             adminMembers: result
-        //         })
-
-        //         console.log(this.state.adminMembers)
-        //     })
-
         axios.get('http://localhost:8080/members').then(res => {
             this.setState({
                 adminMembers: res.data
@@ -84,7 +119,7 @@ class adminMembers extends React.Component {
                 </Button>
 
                     <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
+                        <Table >
                             <TableHead style={{ backgroundColor: '#424242' }}>
                                 <TableRow >
                                     <TableCell style={{ color: 'white' }}>First Name</TableCell>
@@ -92,12 +127,13 @@ class adminMembers extends React.Component {
                                     <TableCell style={{ color: 'white' }}>Email</TableCell>
                                     <TableCell style={{ color: 'white' }}>Date of birth</TableCell>
                                     <TableCell style={{ color: 'white' }}>Address</TableCell>
+                                    <TableCell style={{ color: 'white' }}>Contact No</TableCell>
                                     <TableCell style={{ color: 'white' }}>Registered Date</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {this.state.adminMembers.map((row) => (
-                                    <TableRow key={row.id} onClick={() => this.handleClickOpen(row)}>
+                                    <TableRow key={row.id} onClick={() => this.handleClickOpenView(row)}>
                                         <TableCell>{row.fname}</TableCell>
                                         <TableCell >{row.lname}</TableCell>
                                         <TableCell >{row.email}</TableCell>
@@ -106,6 +142,7 @@ class adminMembers extends React.Component {
                                             <div style={{ fontSize: '11px', color: "grey" }}>{moment(row.dob).fromNow(true)}</div>
                                         </TableCell>
                                         <TableCell >{row.address}</TableCell>
+                                        <TableCell >{row.contactNo}</TableCell>
                                         <TableCell >
                                             {moment(row.memberSince).format("YYYY-MM-DD")}
                                             <div style={{ fontSize: '11px', color: "grey" }}>{moment(row.memberSince).fromNow(true)}</div>
@@ -119,36 +156,33 @@ class adminMembers extends React.Component {
 
                 <div>
                     <Dialog
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
+                        open={this.state.openView}
+                        onClose={this.handleCloseView}
                         fullWidth
                     >
                         {/* <DialogTitle id="alert-dialog-title">{this.state.memberItem.fname + " " + this.state.memberItem.lname}</DialogTitle> */}
                         <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
+                            <DialogContentText >
                                 <Card variant="outlined">
-                                    <CardMedia
-                                        component="img"
-                                        alt="Member Image"
-                                        // style={{ minHeight: "300px" }}
-                                        height="300"
-                                        image="https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png"
-                                        title="Contemplative Reptile"
-                                    />
-                                    <CardContent>
+                                    <CardContent >
+                                        <Avatar
+                                            style={{ width: "120px", height: "120px", display: "block", marginLeft: "auto", marginRight: "auto" }}
+                                            alt="Member"
+                                            src="https://www.pngkey.com/png/full/114-1149878_setting-user-avatar-in-specific-size-without-breaking.png" />
                                         <Typography gutterBottom variant="h5" component="h2" align="center">
+
                                             {this.state.memberItem.fname + " " + this.state.memberItem.lname}
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p" align="center">
                                             Address - {this.state.memberItem.address}<br></br>
+                                            Contact No - {this.state.memberItem.contactNo}<br></br>
                                             Email - {this.state.memberItem.email}<br></br>
                                             Date of birth - {moment(this.state.memberItem.dob).format("YYYY-MM-DD")}<br></br>
                                             Registered date - {moment(this.state.memberItem.memberSince).format("YYYY-MM-DD")}<br></br>
                                             <Button size="small" variant="outlined" color="primary"
                                                 style={{ marginTop: "10px", marginRight: "5px" }}
                                                 startIcon={<EditIcon></EditIcon>}
+                                                onClick={this.handleClickOpenEdit}
                                             >
                                                 Edit Details
                                             </Button>
@@ -171,15 +205,13 @@ class adminMembers extends React.Component {
                                                         </TableRow>
                                                     </TableHead>
                                                     <TableBody>
-                                                        {this.state.adminMembers.map((row) => (
-                                                            <TableRow key={row.id} onClick={() => this.handleClickOpen(row)}>
-                                                                <TableCell >NVL0004 </TableCell>
-                                                                <TableCell >කලියුගය</TableCell>
-                                                                <TableCell >2020-04-05</TableCell>
-                                                                <TableCell >2020-04-07</TableCell>
-                                                                <TableCell >100 </TableCell>
-                                                            </TableRow>
-                                                        ))}
+                                                        <TableRow>
+                                                            <TableCell >NVL0004 </TableCell>
+                                                            <TableCell >කලියුගය</TableCell>
+                                                            <TableCell >2020-04-05</TableCell>
+                                                            <TableCell >2020-04-07</TableCell>
+                                                            <TableCell >100 </TableCell>
+                                                        </TableRow>
                                                     </TableBody>
                                                 </Table>
                                             </TableContainer>
@@ -190,14 +222,48 @@ class adminMembers extends React.Component {
 
                                     </CardActions>
                                 </Card>
-
-
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={this.handleClose} color="secondary" autoFocus>
+                            <Button onClick={this.handleCloseView} color="secondary" autoFocus>
                                 Close
                              </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <Dialog open={this.state.openEdit} onClose={this.handleCloseEdit} >
+                        <DialogTitle >{"Edit details of " + this.state.memberItem.fname}</DialogTitle>
+                        <DialogContent>
+                            <TextField
+                                name="address"
+                                margin="dense"
+                                id="address"
+                                label="Address"
+                                type="text"
+                                variant="outlined"
+                                fullWidth
+                                value={this.state.memberItem.address}
+                                onChange={this.onChange}
+                            />
+
+                            <TextField
+                                name="contactNo"
+                                margin="dense"
+                                id="contactNo"
+                                label="Contact No"
+                                type="text"
+                                variant="outlined"
+                                value={this.state.memberItem.contactNo}
+                                onChange={this.onChange}
+                            />
+                        </DialogContent>
+                        <DialogActions>
+                            <Button color="secondary" onClick={this.handleCloseEdit}>
+                                Cancel
+                            </Button>
+                            <Button color="primary" onClick={this.editMember}>
+                                Save
+                            </Button>
                         </DialogActions>
                     </Dialog>
 
