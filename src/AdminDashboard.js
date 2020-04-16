@@ -88,6 +88,7 @@ function AdminDashboard(props) {
     };
 
     const drawer = (
+
         <div>
             <div className={classes.toolbar} />
             <Divider />
@@ -119,23 +120,6 @@ function AdminDashboard(props) {
                         Members
                     </ListItemText>
                 </ListItem>
-                <ListItem button
-                    component={Link}
-                    to="/admin/customers"
-                    selected={selectedIndex === 2}
-                    onClick={(event) => handleListItemClick(event, 2)}>
-                    <ListItemIcon>
-                        <CustomerIcon />
-                    </ListItemIcon>
-                    <ListItemText>
-                        Customers
-                    </ListItemText>
-                </ListItem>
-
-
-            </List>
-            <Divider />
-            <List>
                 <ListItem
                     button
                     component={Link}
@@ -146,36 +130,7 @@ function AdminDashboard(props) {
                         <LibraryBookIcon />
                     </ListItemIcon>
                     <ListItemText>
-                        Library Books
-                    </ListItemText>
-                </ListItem>
-                <ListItem
-                    button
-                    component={Link}
-                    to="/admin/store-books"
-                    selected={selectedIndex === 4}
-                    onClick={(event) => handleListItemClick(event, 4)}>
-                    <ListItemIcon>
-                        <BookIcon />
-                    </ListItemIcon>
-                    <ListItemText>
-                        Store Books
-                    </ListItemText>
-                </ListItem>
-            </List>
-            <Divider />
-            <List>
-                <ListItem
-                    button
-                    component={Link}
-                    to="/admin/orders"
-                    selected={selectedIndex === 5}
-                    onClick={(event) => handleListItemClick(event, 5)}>
-                    <ListItemIcon>
-                        <OrderIcon />
-                    </ListItemIcon>
-                    <ListItemText>
-                        Orders
+                        Books
                     </ListItemText>
                 </ListItem>
                 <ListItem
@@ -213,7 +168,7 @@ function AdminDashboard(props) {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="h6" noWrap>
-                            Golden Library & Books Store
+                            Golden Library
                      </Typography>
                     </Toolbar>
                 </AppBar>
@@ -221,6 +176,7 @@ function AdminDashboard(props) {
                     {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
                     <Hidden smUp implementation="css">
                         <Drawer
+
                             container={container}
                             variant="temporary"
                             anchor={theme.direction === 'rtl' ? 'right' : 'left'}
@@ -247,8 +203,6 @@ function AdminDashboard(props) {
                         >
                             {drawer}
                         </Drawer>
-
-
                     </Hidden>
                 </nav>
                 <main className={classes.content}>
