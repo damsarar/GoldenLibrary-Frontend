@@ -155,6 +155,7 @@ class adminMembers extends React.Component {
                 </div>
 
                 <div>
+                    {/* View dialog */}
                     <Dialog
                         open={this.state.openView}
                         onClose={this.handleCloseView}
@@ -231,6 +232,7 @@ class adminMembers extends React.Component {
                         </DialogActions>
                     </Dialog>
 
+                    {/* Edit dialog */}
                     <Dialog open={this.state.openEdit} onClose={this.handleCloseEdit} >
                         <DialogTitle >{"Edit details of " + this.state.memberItem.fname}</DialogTitle>
                         <DialogContent>
