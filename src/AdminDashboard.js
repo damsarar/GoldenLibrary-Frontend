@@ -12,7 +12,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Button } from '@material-ui/core';
 
 // icons
 
@@ -36,6 +36,8 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import AdminAdministrators from './views/admin/adminAdministrators'
 import AdminMembers from './views/admin/adminMembers'
+
+import LoginPage from './views/Login'
 
 
 const drawerWidth = 240;
@@ -154,74 +156,75 @@ function AdminDashboard(props) {
 
     return (
         <div className={classes.root}>
-            <Router>
-                <CssBaseline />
-                <AppBar position="fixed" className={classes.appBar} style={{ backgroundColor: "gold", color: "black" }}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            className={classes.menuButton}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            Golden Library
+            <CssBaseline />
+            <AppBar position="fixed" className={classes.appBar} style={{ backgroundColor: "gold", color: "black" }}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        className={classes.menuButton}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    <Typography variant="h6" noWrap>
+                        Golden Library
                      </Typography>
-                    </Toolbar>
-                </AppBar>
-                <nav className={classes.drawer} aria-label="mailbox folders">
-                    {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-                    <Hidden smUp implementation="css">
-                        <Drawer
+                    <Button component={Link} to="/login">
+                        Login
+                    </Button>
+                </Toolbar>
+            </AppBar>
+            <nav className={classes.drawer} aria-label="mailbox folders">
+                {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                <Hidden smUp implementation="css">
+                    <Drawer
 
-                            container={container}
-                            variant="temporary"
-                            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-                            open={mobileOpen}
-                            onClose={handleDrawerToggle}
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                            ModalProps={{
-                                keepMounted: true, // Better open performance on mobile.
-                            }}
-                        >
-                            {drawer}
-                        </Drawer>
+                        container={container}
+                        variant="temporary"
+                        anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        ModalProps={{
+                            keepMounted: true, // Better open performance on mobile.
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
 
-                    </Hidden>
-                    <Hidden xsDown implementation="css">
-                        <Drawer
-                            classes={{
-                                paper: classes.drawerPaper,
-                            }}
-                            variant="permanent"
-                            open
-                        >
-                            {drawer}
-                        </Drawer>
-                    </Hidden>
-                </nav>
-                <main className={classes.content}>
-                    <div className={classes.toolbar} />
-                    <Switch>
-                        <Route path="/admin/administrators">
-                            <AdminAdministrators></AdminAdministrators>
-                        </Route>
-                        <Route path="/admin/members">
-                            <AdminMembers></AdminMembers>
-                        </Route>
+                </Hidden>
+                <Hidden xsDown implementation="css">
+                    <Drawer
+                        classes={{
+                            paper: classes.drawerPaper,
+                        }}
+                        variant="permanent"
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Hidden>
+            </nav>
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                <Switch>
+                    <Route path="/admin/administrators">
+                        <AdminAdministrators></AdminAdministrators>
+                    </Route>
+                    <Route path="/admin/members">
+                        <AdminMembers></AdminMembers>
+                    </Route>
+                    <Route path="/login">
+                        <LoginPage></LoginPage>
+                    </Route>
 
-                    </Switch>
-
-                </main>
-
-            </Router>
-
-        </div>
+                </Switch>
+            </main>
+        </div >
     );
 }
 

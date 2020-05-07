@@ -3,10 +3,15 @@ import './App.css';
 
 import AdminDashboard from './AdminDashboard'
 
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 function App() {
   return (
     <div className="App">
-      <AdminDashboard></AdminDashboard>
+      <Router>
+        <AdminDashboard></AdminDashboard>
+      </Router>
+
     </div>
   );
 }
