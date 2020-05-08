@@ -21,48 +21,83 @@ class adminLibrarybooks extends React.Component {
 
         this.state = {
             adminLibrarybooks: [],
-            open: false,
+            openView: false,
+            openEdit: false,
             name: 'Name',
-            memberItem: []
+            memberItem: [],
+            memberDocId: ''
         }
 
         this.handleClickOpen = this.handleClickOpen.bind(this)
         this.handleClose = this.handleClose.bind(this)
+
+        this.handleClickOpenEdit = this.handleClickOpenEdit.bind(this)
+        this.handleCloseEdit = this.handleCloseEdit.bind(this)
+
+        this.editMember = this.editMember.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
 
     handleClickOpen(item) {
 
         this.setState({
-            name: 'Damsara',
             memberItem: item,
-            open: true,
+            memberDocId: item.id,
+            openView: true,
         })
         console.log(this.state.memberItem)
     };
 
-    handleClose() {
+    handleCloseView() {
         this.setState({
-            open: false
+            openView: false
         })
     };
 
+    handleClickOpenEdit() {
+
+        this.setState({
+            openEdit: true,
+        })
+        console.log(this.state.memberItem)
+    };
+
+    handleCloseEdit() {
+        this.setState({
+            openEdit: false
+        })
+    };
+
+    onChange(e) {
+        const state = this.state.memberItem
+        state[e.target.name] = e.target.value
+        this.setState({
+            memberItem: state
+        })
+    }
+
+    editMember(e) {
+        e.preventDefault();
+
+        const address = this.state.memberItem.address
+        const contactNo = this.state.memberItem.contactNo
+
+        axios.put('http://localhost:8080/members/' + this.state.memberDocId, { "address": address, "contactNo": contactNo })
+            .then((result) => {
+                console.log(result)
+                this.handleCloseEdit()
+            }).catch(e => {
+                console.log(e)
+            })
+    }
+
     componentDidMount() {
-        // fetch('http://localhost:8080/users')
-        //     .then(res => res.json())
-        //     .then(result => {
-        //         this.setState({
-        //             adminMembers: result
-        //         })
-
-        //         console.log(this.state.adminMembers)
-        //     })
-
         axios.get('http://localhost:8080/members').then(res => {
             this.setState({
-                adminLibrarybooks: res.data
+                adminMembers: res.data
             })
 
-            console.log(this.state.adminLibrarybooks)
+            console.log(this.state.adminMembers)
         }).catch(err => {
             console.log(err)
         })
@@ -84,7 +119,7 @@ class adminLibrarybooks extends React.Component {
                 </Button>
 
                     <TableContainer component={Paper}>
-                        <Table aria-label="simple table">
+                        <Table>
                             <TableHead style={{ backgroundColor: '#424242' }}>
                                 <TableRow >
                                     <TableCell style={{ color: 'white' }}>ISBN</TableCell>
@@ -96,7 +131,7 @@ class adminLibrarybooks extends React.Component {
                             </TableHead>
                             <TableBody>
                                 {this.state.adminLibrarybooks.map((row) => (
-                                    <TableRow key={row.id} onClick={() => this.handleClickOpen(row)}>
+                                    <TableRow key={row.id} onClick={() => this.handleClickOpenView(row)}>
                                         <TableCell>{row.fname}</TableCell>
                                         <TableCell >{row.lname}</TableCell>
                                         <TableCell >{row.email}</TableCell>
