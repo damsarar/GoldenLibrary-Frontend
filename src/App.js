@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import AdminDashboard from './AdminDashboard'
+import Navbar from './components/Navbar'
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <AdminDashboard></AdminDashboard>
+        <Navbar></Navbar>
       </Router>
 
     </div>
